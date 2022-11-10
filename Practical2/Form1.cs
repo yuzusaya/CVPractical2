@@ -41,7 +41,7 @@ namespace Practical2
 
         private void btnBrowse_Click(object sender, EventArgs e)
         {
-            
+
             OpenFileDialog Openfile = new OpenFileDialog();
             if (Openfile.ShowDialog() == DialogResult.OK)
             {
@@ -53,12 +53,12 @@ namespace Practical2
                 label1.Text += "Height: " + _oriImage.Height + "px\n";
                 ImagePreprocessing();
             }
-            
+
         }
 
         public void ImagePreprocessing()
         {
-           _grayImage= new Grayscale(0.2125, 0.7154, 0.0721).Apply(_oriImage);
+            _grayImage = new Grayscale(0.2125, 0.7154, 0.0721).Apply(_oriImage);
             new Median().ApplyInPlace(_grayImage);
             _binaryImage = new OtsuThreshold().Apply(_grayImage);
             new Invert().ApplyInPlace(_binaryImage);
@@ -87,13 +87,13 @@ namespace Practical2
             Objects.Clear();
             CurrentIndex = 0;
             label2.Text = "Number of connected\ncomponents: " + num;
-            for (int i =0;i<num;i++)
+            for (int i = 0; i < num; i++)
             {
-                
+
                 bc.ExtractBlobsImage(_binaryImage, blobs[i], true);
-                
+
                 Bitmap tmpImage = new Crop(blobs[i].Rectangle).Apply(blobs[i].Image.ToManagedImage());
-                Objects.Add(new ConnectedObject { Name = "Object" + (i + 1),Image=tmpImage,BoundingRectangle=blobs[i].Rectangle,Centroid=blobs[i].CenterOfGravity});
+                Objects.Add(new ConnectedObject { Name = "Object" + (i + 1), Image = tmpImage, BoundingRectangle = blobs[i].Rectangle, Centroid = blobs[i].CenterOfGravity });
                 //tmpImage.Save(@"C:\Users\user\Pictures\Pratical2\pic" + CurrentTime + "_" + i + ".png", ImageFormat.Png);
             }
             GetInformation();
@@ -101,13 +101,13 @@ namespace Practical2
 
         public void GetInformation()
         {
-            if(Objects.Count!=0)
-            { 
-            label3.Text = Objects[CurrentIndex].Name+"\n";
-            label3.Text = "Size: "+Objects[CurrentIndex].BoundingRectangle.Width + "x" + Objects[CurrentIndex].BoundingRectangle.Height+"\n";
-            label3.Text += "Centroid: " + Objects[CurrentIndex].Centroid+"\n";
-            label3.Text += "Bounding rectangle: " + Objects[CurrentIndex].BoundingRectangle + "\n";
-            pb4.Image = Objects[CurrentIndex].Image;
+            if (Objects.Count != 0)
+            {
+                label3.Text = Objects[CurrentIndex].Name + "\n";
+                label3.Text = "Size: " + Objects[CurrentIndex].BoundingRectangle.Width + "x" + Objects[CurrentIndex].BoundingRectangle.Height + "\n";
+                label3.Text += "Centroid: " + Objects[CurrentIndex].Centroid + "\n";
+                label3.Text += "Bounding rectangle: " + Objects[CurrentIndex].BoundingRectangle + "\n";
+                pb4.Image = Objects[CurrentIndex].Image;
             }
         }
 
@@ -129,7 +129,7 @@ namespace Practical2
             if (Objects.Count != 0)
             {
                 CurrentIndex += 1;
-                if(CurrentIndex>=Objects.Count)
+                if (CurrentIndex >= Objects.Count)
                 {
                     CurrentIndex = 0;
                 }
